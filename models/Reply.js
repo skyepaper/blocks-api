@@ -6,9 +6,9 @@ const ReplySchema=new Schema({
         type:String,
         required:true
     },
-    name:{
+    senderId:{
         type:String,
-        default:'anon'
+        default:'12345'
     },
     messageId:{
         type:String,
@@ -19,12 +19,13 @@ const ReplySchema=new Schema({
         default:function(){return new Intl.DateTimeFormat('en-us',{
             dateStyle:'medium',
             timeStyle:'short',
+            timeZone: 'EET'
         }).format(new Date())}
     },
-    date:{
-        type:String,
-        default:new Date()
-    }
+    likes:{
+        type:Number,
+        default:0
+    },
 })
 
 const Reply=mongoose.model("Reply", ReplySchema);
