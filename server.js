@@ -33,9 +33,6 @@ io.on("connection", (socket) => {
  
 });
 
-server.listen(3001, () => {
-  console.log("SERVER IS RUNNING");
-});
 
 mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser:true,
@@ -120,5 +117,3 @@ app.put('/user/save/:id', async (req,res)=>{
     res.json(user);
 });
 
-
-app.listen(3001, ()=>console.log('Server started on port 3001'));
