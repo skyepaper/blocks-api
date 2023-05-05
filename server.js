@@ -9,7 +9,7 @@ const app=express();
 app.use(express.json());
 app.use(cors());
 
-let messages=[];
+
 
 mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser:true,
@@ -114,10 +114,11 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+    let messages=[];
 
   setInterval(function() {
     if(messages.length>0){
-        console.log(messages);
+        console.log(`User:${socket.id} ${messages}`);
         let text=messages.pop();
       socket.emit('message',{text});
     }
