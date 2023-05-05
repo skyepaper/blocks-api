@@ -11,32 +11,6 @@ app.use(cors());
 
 let messages=[];
 
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
-
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
-  setInterval(function() {
-    if(messages.length>0){
-        console.log(messages);
-        let text=messages.pop();
-      socket.emit('message',{text});
-    }
-  
-}, 5000);
- 
-});
-
-server.listen(3002, () => {
-  console.log("SERVER IS RUNNING");
-});
-
 mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser:true,
     useUnifiedTopology:true
@@ -54,6 +28,9 @@ replyEventEmitter.on('change', change => messages.push('reply'));
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => messages.push('user'));
 
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
+});
 
 app.get('/messages', async(req,res)=>{  
 
@@ -121,4 +98,30 @@ app.put('/user/save/:id', async (req,res)=>{
 });
 
 
-app.listen(3001, ()=>console.log('Server started on port 3001'));
+
+
+
+server = require('http').createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+server.listen(3002);
+
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  setInterval(function() {
+    if(messages.length>0){
+        console.log(messages);
+        let text=messages.pop();
+      socket.emit('message',{text});
+    }
+  
+}, 5000);
+ 
+});
