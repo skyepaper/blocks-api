@@ -22,11 +22,11 @@ const Reply=require('./models/Reply');
 const User=require('./models/User');
 
 const messageEventEmitter = Message.watch();
-messageEventEmitter.on('change', change => messages.push('message'));
+messageEventEmitter.on('change', change => if(messages)messages.push('message'));
 const replyEventEmitter = Reply.watch();
-replyEventEmitter.on('change', change => messages.push('reply'));
+replyEventEmitter.on('change', change =>if(messages) messages.push('reply'));
 const userEventEmitter = User.watch();
-userEventEmitter.on('change', change => messages.push('user'));
+userEventEmitter.on('change', change => if(messages)messages.push('user'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
