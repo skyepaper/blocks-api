@@ -10,7 +10,6 @@ app.use(express.json());
 app.use(cors());
 
 
-
 mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser:true,
     useUnifiedTopology:true
@@ -21,12 +20,24 @@ const Message=require('./models/Message');
 const Reply=require('./models/Reply');
 const User=require('./models/User');
 
+let message='';
+const event=new Event('trigger');
+
 const messageEventEmitter = Message.watch();
-messageEventEmitter.on('change', (change) => {if(messages)messages.push('message');});
+messageEventEmitter.on('change', change => {
+  message='message';
+  window.dispatchEvent(event);
+});
 const replyEventEmitter = Reply.watch();
-replyEventEmitter.on('change',(change) => {if(messages)messages.push('reply');});
+replyEventEmitter.on('change', change => {
+  message='reply';
+  window.dispatchEvent(event);
+});
 const userEventEmitter = User.watch();
-userEventEmitter.on('change', (change) => {if(messages)messages.push('user');});
+userEventEmitter.on('change', change => {
+  message='user';
+  window.dispatchEvent(event);
+});
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -112,17 +123,13 @@ const io = new Server(server, {
 server.listen(3002);
 
 
+
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-    let messages=[];
 
-  setInterval(function() {
-    if(messages.length>0){
-        console.log(`User:${socket.id} ${messages}`);
-        let text=messages.pop();
-      socket.emit('message',{text});
-    }
-  
-}, 5000);
+window.addEventListener('trigger',()=>{
+  let text=message;
+  socket.emit('message',{text});
+},false);
  
 });
