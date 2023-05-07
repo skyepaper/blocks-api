@@ -21,22 +21,27 @@ const Reply=require('./models/Reply');
 const User=require('./models/User');
 
 let message='';
-const event=new Event('trigger');
+const event=new EventEmitter();
+myEmitter.on('eventOne', trigger);
+function trigger() {
+  let text=message;
+  socket.emit('message',{text});
+}
 
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
   message='message';
-  document.dispatchEvent(event);
+  myEmitter.emit('eventOne');
 });
 const replyEventEmitter = Reply.watch();
 replyEventEmitter.on('change', change => {
   message='reply';
-  document.dispatchEvent(event);
+  myEmitter.emit('eventOne');
 });
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => {
   message='user';
-  document.dispatchEvent(event);
+  myEmitter.emit('eventOne');
 });
 
 app.get('/', function (req, res) {
@@ -126,10 +131,6 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
-document.addEventListener('trigger',()=>{
-  let text=message;
-  socket.emit('message',{text});
-},false);
  
 });
+
