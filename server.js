@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 server = require('http').createServer(app);
-let message='';
+
 const myEmitter=new events.EventEmitter();
 myEmitter.setMaxListeners(0);
 
@@ -25,10 +25,10 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  myEmitter.on('eventOne',(mess)=>{
-    let text=mess;
+  myEmitter.on('eventOne',(message)=>{
+    let text=message;
     socket.emit('message',{text});
-    message='';
+
   });
 
 });
@@ -50,17 +50,17 @@ const User=require('./models/User');
 
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
-  message='message';
+  let message='message';
   myEmitter.emit('eventOne',message);
 });
 const replyEventEmitter = Reply.watch();
 replyEventEmitter.on('change', change => {
-  message='reply';
+  let message='reply';
   myEmitter.emit('eventOne',message);
 });
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => {
-  message='user';
+  let message='user';
   myEmitter.emit('eventOne',message);
 });
 
