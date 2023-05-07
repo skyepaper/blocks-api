@@ -26,17 +26,17 @@ const event=new Event('trigger');
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
   message='message';
-  window.dispatchEvent(event);
+  document.dispatchEvent(event);
 });
 const replyEventEmitter = Reply.watch();
 replyEventEmitter.on('change', change => {
   message='reply';
-  window.dispatchEvent(event);
+  document.dispatchEvent(event);
 });
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => {
   message='user';
-  window.dispatchEvent(event);
+  document.dispatchEvent(event);
 });
 
 app.get('/', function (req, res) {
