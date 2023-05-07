@@ -22,11 +22,11 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  myEmitter.addEventListener('eventOne',()=>{
+  myEmitter.on('eventOne',()=>{
     let text=message;
     socket.emit('message',{text});
   });
-  io.on('close', () => myEmitter.removeEventListener('eventOne'));
+ // io.on('close', () => myEmitter.removeEventListener('eventOne'));
 });
 
 
