@@ -127,7 +127,7 @@ server.listen(3002);
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-window.addEventListener('trigger',()=>{
+document.addEventListener('trigger',()=>{
   let text=message;
   socket.emit('message',{text});
 },false);
