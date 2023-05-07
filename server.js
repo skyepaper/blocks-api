@@ -22,7 +22,7 @@ const Reply=require('./models/Reply');
 const User=require('./models/User');
 
 let message='';
-const event=new EventEmitter();
+const myEmitter=new EventEmitter();
 myEmitter.on('eventOne', trigger);
 function trigger() {
   let text=message;
