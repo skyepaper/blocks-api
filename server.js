@@ -10,7 +10,10 @@ const app=express();
 app.use(express.json());
 app.use(cors());
 
-server = require('http').createServer(app)
+server = require('http').createServer(app);
+let message='';
+const myEmitter=new events.EventEmitter();
+myEmitter.setMaxListeners(0);
 
 const io = new Server(server, {
   cors: {
@@ -22,14 +25,12 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.on('eventOne',()=>{
-    let text=message;
+  myEmitter.on('eventOne',(mess)=>{
+    let text=mess;
     socket.emit('message',{text});
     message='';
   });
 
-  // and then later...
-  socket.off("eventOne", ()=>{});
 });
 
 
@@ -43,24 +44,24 @@ const Message=require('./models/Message');
 const Reply=require('./models/Reply');
 const User=require('./models/User');
 
-let message='';
-const myEmitter=new events.EventEmitter();
+
+
 
 
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
   message='message';
-  myEmitter.emit('eventOne');
+  myEmitter.emit('eventOne',message);
 });
 const replyEventEmitter = Reply.watch();
 replyEventEmitter.on('change', change => {
   message='reply';
-  myEmitter.emit('eventOne');
+  myEmitter.emit('eventOne',message);
 });
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => {
   message='user';
-  myEmitter.emit('eventOne');
+  myEmitter.emit('eventOne',message);
 });
 
 app.get('/', function (req, res) {
