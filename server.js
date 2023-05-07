@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose=require('mongoose');
-const EventEmitter = require('events');
+const events = require('events');
 
 const http = require("http");
 const { Server } = require("socket.io");
@@ -22,14 +22,14 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  let listener=()=>{
+  socket.on('eventOne',()=>{
     let text=message;
     socket.emit('message',{text});
     message='';
-  }
- 
-  socket.on("eventOne",listener);
-  socket.off("eventOne",listener);
+  });
+
+  // and then later...
+  socket.off("eventOne", ()=>{});
 });
 
 
@@ -44,8 +44,7 @@ const Reply=require('./models/Reply');
 const User=require('./models/User');
 
 let message='';
-const myEmitter=new EventEmitter();
-//myEmitter.on('eventOne', trigger);
+const myEmitter=new events.EventEmitter();
 
 
 const messageEventEmitter = Message.watch();
