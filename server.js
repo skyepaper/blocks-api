@@ -25,7 +25,8 @@ io.on("connection", (socket) => {
   myEmitter.addListener('eventOne',()=>{
     let text=message;
     socket.emit('message',{text});
-  })
+  });
+  io.on('close', () => myEmitter.removeListener('eventOne'));
 });
 
 
