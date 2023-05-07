@@ -25,7 +25,7 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  myEmitter.on('eventOne',(message)=>{
+  socket.addEventListener('eventOne',(message)=>{
     let text=message;
     socket.emit('message',{text});
 
@@ -132,6 +132,7 @@ app.put('/user/save/:id', async (req,res)=>{
     user.save();
     res.json(user);
 });
+
 
 
 
