@@ -22,6 +22,10 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+  myEmitter.addListener('eventOne',()=>{
+    let text=message;
+    socket.emit('message',{text});
+  })
 });
 
 
@@ -37,11 +41,8 @@ const User=require('./models/User');
 
 let message='';
 const myEmitter=new EventEmitter();
-myEmitter.on('eventOne', trigger);
-function trigger() {
-  let text=message;
-  socket.emit('message',{text});
-}
+//myEmitter.on('eventOne', trigger);
+
 
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
@@ -127,9 +128,6 @@ app.put('/user/save/:id', async (req,res)=>{
     user.save();
     res.json(user);
 });
-
-
-
 
 
 
