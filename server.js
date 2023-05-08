@@ -13,8 +13,15 @@ app.use(cors());
 
 server = require('http').createServer(app);
 
-const myEmitter=new events.EventEmitter();
-myEmitter.setMaxListeners(0);
+mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+}).then(()=>console.log('Connected to DB'))
+  .catch(console.error);
+
+const Message=require('./models/Message');
+const Reply=require('./models/Reply');
+const User=require('./models/User');
 
 const io = new Server(server, {
   cors: {
@@ -52,15 +59,7 @@ io.on("connection", (socket) => {
 });
 
 
-mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-}).then(()=>console.log('Connected to DB'))
-  .catch(console.error);
 
-const Message=require('./models/Message');
-const Reply=require('./models/Reply');
-const User=require('./models/User');
 
 
 
