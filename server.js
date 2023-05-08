@@ -28,6 +28,7 @@ const io = new Server(server, {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
+  'force new connection': true 
 });
 server.listen(3002);
 
