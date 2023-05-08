@@ -26,11 +26,28 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.addEventListener('eventOne',(message)=>{
+  /*socket.addEventListener('eventOne',(message)=>{
     let text=message;
     socket.emit('message',{text});
+  });*/
 
+  const messageEventEmitter = Message.watch();
+  messageEventEmitter.on('change', change => {
+    let text='message';
+      socket.emit('message',{text});
   });
+  const replyEventEmitter = Reply.watch();
+  replyEventEmitter.on('change', change => {
+    let text='reply';
+      socket.emit('message',{text});
+  });
+  const userEventEmitter = User.watch();
+  userEventEmitter.on('change', change => {
+    let text='user';
+    socket.emit('message',{text});
+  });
+
+
 
 });
 
@@ -48,22 +65,22 @@ const User=require('./models/User');
 
 
 
-
+/*
 const messageEventEmitter = Message.watch();
 messageEventEmitter.on('change', change => {
-  let message='message';
-  myEmitter.emit('eventOne',message);
+  let text='message';
+    socket.emit('message',{text});
 });
 const replyEventEmitter = Reply.watch();
 replyEventEmitter.on('change', change => {
-  let message='reply';
-  myEmitter.emit('eventOne',message);
+  let text='reply';
+    socket.emit('message',{text});
 });
 const userEventEmitter = User.watch();
 userEventEmitter.on('change', change => {
-  let message='user';
-  myEmitter.emit('eventOne',message);
-});
+  let text='user';
+  socket.emit('message',{text});
+});*/
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
