@@ -1,12 +1,19 @@
-const express=require('express');
+const express = require("express");
 const mongoose=require('mongoose');
-const cors=require('cors');
+const events = require('events');
+const {addEventListener}=require('event-target');
+
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
 const app=express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/aquarium?retryWrites=true&w=majority', {
+server = require('http').createServer(app);
+
+mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser:true,
     useUnifiedTopology:true
 }).then(()=>console.log('Connected to DB'))
@@ -17,6 +24,51 @@ const Reply=require('./models/Reply');
 const User=require('./models/User');
 const Like=require('./models/Like');
 const Postbox=require('./models/Postbox');
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+  'force new connection': true 
+});
+server.listen(3002);
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  const messageEventEmitter = Message.watch();
+  messageEventEmitter.on('change', change => {
+    let text='message';
+      socket.emit('message',{text});
+  });
+  const replyEventEmitter = Reply.watch();
+  replyEventEmitter.on('change', change => {
+    let text='reply';
+      socket.emit('message',{text});
+  });
+  const userEventEmitter = User.watch();
+  userEventEmitter.on('change', change => {
+    let text='user';
+    socket.emit('message',{text});
+  });
+
+  const likeEventEmitter = Like.watch();
+  likeEventEmitter.on('change', change => {
+    let text='like';
+    socket.emit('message',{text});
+  });
+
+  const postboxEventEmitter = Postbox.watch();
+  postboxEventEmitter.on('change', change => {
+    let text='postbox';
+    socket.emit('message',{text});
+  });
+
+
+
+});
+
 
 app.get('/messages', async(req,res)=>{  
 
@@ -123,4 +175,3 @@ app.post('/like/new', async (req,res)=>{
 
 
 app.listen(3001, ()=>console.log('Server started on port 3001'));
-
