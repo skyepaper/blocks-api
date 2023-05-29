@@ -15,6 +15,14 @@ const UserSchema=new Schema({
         type:Number,
         default:6
     },
+    gold:{
+        type:Number,
+        default:100
+    },
+    goldLike:{
+        type:Number,
+        default:0
+    },
 })
 
 const User=mongoose.model("User", UserSchema);
