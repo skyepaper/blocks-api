@@ -36,6 +36,10 @@ server.listen(3002);
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+    
+     socket.on('disconnect', function () {
+    console.log(`User DisConnected: ${socket.id}`);
+});
 
   const messageEventEmitter = Message.watch();
   messageEventEmitter.on('change', change => {
