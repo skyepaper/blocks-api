@@ -173,5 +173,3 @@ app.post('/like/new', async (req,res)=>{
     res.json(like);
 });
 
-
-app.listen(3001, ()=>console.log('Server started on port 3001'));
