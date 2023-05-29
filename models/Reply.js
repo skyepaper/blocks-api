@@ -21,11 +21,7 @@ const ReplySchema=new Schema({
             timeStyle:'short',
             timeZone: 'EET'
         }).format(new Date())}
-    },
-    likes:{
-        type:Number,
-        default:0
-    },
+    }
 })
 
 const Reply=mongoose.model("Reply", ReplySchema);
