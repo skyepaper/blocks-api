@@ -1,17 +1,10 @@
-const express = require("express");
+const express=require('express');
 const mongoose=require('mongoose');
-const events = require('events');
-const {addEventListener}=require('event-target');
-
-const http = require("http");
-const { Server } = require("socket.io");
-const cors = require("cors");
+const cors=require('cors');
 
 const app=express();
 app.use(express.json());
 app.use(cors());
-
-server = require('http').createServer(app);
 
 mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.mongodb.net/aquarium?retryWrites=true&w=majority', {
     useNewUrlParser:true,
@@ -22,69 +15,8 @@ mongoose.connect('mongodb+srv://borismirevbm:2YacEBc3qgz4OiLJ@aquarium.6ud9dig.m
 const Message=require('./models/Message');
 const Reply=require('./models/Reply');
 const User=require('./models/User');
-
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-  'force new connection': true 
-});
-server.listen(3002);
-
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-  /*socket.addEventListener('eventOne',(message)=>{
-    let text=message;
-    socket.emit('message',{text});
-  });*/
-
-  const messageEventEmitter = Message.watch();
-  messageEventEmitter.on('change', change => {
-    let text='message';
-      socket.emit('message',{text});
-  });
-  const replyEventEmitter = Reply.watch();
-  replyEventEmitter.on('change', change => {
-    let text='reply';
-      socket.emit('message',{text});
-  });
-  const userEventEmitter = User.watch();
-  userEventEmitter.on('change', change => {
-    let text='user';
-    socket.emit('message',{text});
-  });
-
-
-
-});
-
-
-
-
-
-
-
-/*
-const messageEventEmitter = Message.watch();
-messageEventEmitter.on('change', change => {
-  let text='message';
-    socket.emit('message',{text});
-});
-const replyEventEmitter = Reply.watch();
-replyEventEmitter.on('change', change => {
-  let text='reply';
-    socket.emit('message',{text});
-});
-const userEventEmitter = User.watch();
-userEventEmitter.on('change', change => {
-  let text='user';
-  socket.emit('message',{text});
-});*/
-
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
+const Like=require('./models/Like');
+const Postbox=require('./models/Postbox');
 
 app.get('/messages', async(req,res)=>{  
 
@@ -151,8 +83,44 @@ app.put('/user/save/:id', async (req,res)=>{
     res.json(user);
 });
 
+app.get('/postboxes', async(req,res)=>{  
+
+    const postboxes=await Postbox.find();
+    res.json(postboxes);
+});
+
+app.post('/postbox/new', async (req,res)=>{
+
+    const postbox=new Postbox({
+
+        userId:req.body.userId,
+        senderId:req.body.senderId,
+        status:req.body.status,
+        gold:req.body.gold,
+
+    });
+    postbox.save();
+    res.json(postbox);
+});
+
+app.get('/likes', async(req,res)=>{  
+
+    const likes=await Like.find();
+    res.json(likes);
+});
+
+app.post('/like/new', async (req,res)=>{
+
+    const like=new Like({
+
+        userId:req.body.userId,
+        messageId:req.body.messageId,
+       
+    });
+    like.save();
+    res.json(like);
+});
 
 
-
-
+app.listen(3001, ()=>console.log('Server started on port 3001'));
 
