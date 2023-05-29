@@ -18,11 +18,7 @@ const MessageSchema=new Schema({
             timeStyle:'short',
             timeZone: 'EET'
         }).format(new Date())}
-    },
-    likes:{
-        type:Number,
-        default:0
-    },
+    }
 })
 
 const Message=mongoose.model("Message", MessageSchema);
