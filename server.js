@@ -151,6 +151,7 @@ app.post('/postbox/new', async (req,res)=>{
 
         userId:req.body.userId,
         senderId:req.body.senderId,
+        type:req.body.type,
         status:req.body.status,
         gold:req.body.gold,
 
