@@ -160,6 +160,17 @@ app.post('/postbox/new', async (req,res)=>{
     res.json(postbox);
 });
 
+app.put('/postbox/save/:id', async (req,res)=>{
+
+    const letter=await Postbox.findByIdAndUpdate(req.params.id);
+   if(letter) {
+    letter.status= req.body.status;
+   }
+   
+    letter.save();
+    res.json(letter);
+});
+
 app.get('/likes', async(req,res)=>{  
 
     const likes=await Like.find();
