@@ -162,13 +162,13 @@ app.post('/postbox/new', async (req,res)=>{
 
 app.put('/postbox/save/:id', async (req,res)=>{
 
-    const letter=await Postbox.findByIdAndUpdate(req.params.id);
-   if(letter) {
-    letter.status= req.body.status;
+    const postbox=await Postbox.findByIdAndUpdate(req.params.id);
+   if(postbox) {
+    postbox.status= req.body.status;
    }
    
-    letter.save();
-    res.json(letter);
+    postbox.save();
+    res.json(postbox);
 });
 
 app.delete('/postbox/delete/:id', async (req,res)=>{
