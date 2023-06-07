@@ -165,9 +165,9 @@ app.put('/postbox/save/:id', async (req,res)=>{
     const postbox=await Postbox.findByIdAndUpdate(req.params.id);
    if(postbox) {
     postbox.status= req.body.status;
+        postbox.save();
    }
    
-    postbox.save();
     res.json(postbox);
 });
 
