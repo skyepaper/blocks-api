@@ -174,7 +174,7 @@ app.put('/postbox/save/:id', async (req,res)=>{
 app.delete('/postbox/delete/:id', async (req,res)=>{
 
     const result=await Postbox.findByIdAndDelete(req.params.id);
-    res.json(result);
+  
 });
 
 app.get('/likes', async(req,res)=>{  
