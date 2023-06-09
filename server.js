@@ -139,6 +139,18 @@ app.put('/user/save/:id', async (req,res)=>{
     res.json(user);
 });
 
+app.put('/user/star/:id', async (req,res)=>{
+
+    const user=await User.findByIdAndUpdate(req.params.id);
+   if(user) {
+    user.goldLike= req.body.goldLike;
+    user.gold= req.body.gold;
+   }
+   
+    user.save();
+    res.json(user);
+});
+
 app.get('/postboxes', async(req,res)=>{  
 
     const postboxes=await Postbox.find();
