@@ -28,7 +28,7 @@ const Postbox=require('./models/Postbox');
 const io = new Server(server, {
   cors: {
    // origin: "http://localhost:3000",
-      origin: "https://aquarium5.web.app/",
+      origin: "https://aquarium5.web.app",
     methods: ["GET", "POST"],
   },
   'force new connection': true 
