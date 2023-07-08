@@ -63,10 +63,11 @@ app.get('/block/:id', async(req,res)=>{
 app.post('/block/new', async (req,res)=>{
 
     const block=new Block({
-        timestamp:req.body.timestamp,
-        data:req.body.data,
+         data:req.body.data,
         hash:req.body.hash,
         prevHash:req.body.prevHash,
+        bonusNum:req.body.bonusNum,
+        bonusColor:req.body.bonusColor,
     });
     block.save();
     res.json(block);
