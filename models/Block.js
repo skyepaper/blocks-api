@@ -29,7 +29,7 @@ const BlockSchema=new Schema({
     },
     bonusColor:{
         type:String,
-        default:''
+        default:'bg-secondary'
     },
    
 })
