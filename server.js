@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
 });
 
   
-  const BlockEventEmitter = Block.watch();
+  const blockEventEmitter = Block.watch();
   blockEventEmitter.on('change', change => {
     let text='block';
       socket.emit('message',{text});
