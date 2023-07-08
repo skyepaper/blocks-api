@@ -23,6 +23,14 @@ const BlockSchema=new Schema({
         type:String,
         default:''
     },
+     bonusNum:{
+        type:String,
+        default:''
+    },
+    bonusColor:{
+        type:String,
+        default:''
+    },
    
 })
 
