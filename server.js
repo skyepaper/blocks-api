@@ -53,11 +53,16 @@ app.get('/blocks/all', async(req,res)=>{
     res.json(blocks);
 });
 
-app.get('/block/:id', async(req,res)=>{  
+app.put('/block/:id', async (req,res)=>{
 
-  const block=await Block.find(req.params.hash);
-  
-   res.json(block);
+    const block=await Block.findByIdAndUpdate(req.params.id);
+    if(block) { 
+        block.data = req.body.data;
+        block.hash = req.body.hash;
+    }
+    
+    block.save();
+    res.json(block);
 });
 
 app.post('/block/new', async (req,res)=>{
