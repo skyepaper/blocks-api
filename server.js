@@ -23,7 +23,7 @@ const Block=require('./models/Block');
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://blocks-ade.web.app/",
     methods: ["GET", "POST"],
   },
   'force new connection': true 
